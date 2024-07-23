@@ -57,6 +57,8 @@ const MonitorCard = forwardRef(({ device }, ref) => {
     }
   };
 
+  const [warn, setWarn] = useState(false);
+
   useImperativeHandle(ref, () => ({
     handlePred: (pred) => {
       setPredList((prev) =>
@@ -65,6 +67,12 @@ const MonitorCard = forwardRef(({ device }, ref) => {
       const [x, y] = pred.move;
       handleMove(x, y);
     },
+    warn: () => {
+      setWarn(true);
+      setTimeout(() => {
+        setWarn(false);
+      }, 4500);
+    }
   }));
 
   const [open, setOpen] = useState(false);
@@ -87,7 +95,7 @@ const MonitorCard = forwardRef(({ device }, ref) => {
   const [loading, setLoading] = useState(true);
 
   return (
-    <div className="w-full h-96 relative" ref={containerRef}>
+    <div className={`w-full h-96 relative ${warn ? 'alarm-border' : ''}`} ref={containerRef}>
       {loading && (
         <div className="flex-center w-full h-full">
           <Spin size="large" />

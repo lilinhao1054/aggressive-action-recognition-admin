@@ -45,3 +45,19 @@
   transform: scale(0.9);
   transition: opacity 300ms, transform 300ms;
 }
+
+/* 定义报警边框动画 */
+@keyframes alarmBorderAnimation {
+  from {
+    border-color: transparent;
+  }
+  to {
+    border-color: rgb(240, 57, 57);
+  }
+}
+
+/* 定义报警边框的CSS类 */
+.alarm-border {
+  border: 2px solid;
+  animation: alarmBorderAnimation 500ms infinite;
+}

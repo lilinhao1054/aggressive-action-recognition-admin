@@ -5,6 +5,8 @@ import { pageQueryDevices } from "@/api/device";
 import { useEffect } from "react";
 import { io } from "socket.io-client";
 import { useRef } from "react";
+import { playSound } from '@/utils/warnning';
+import { notification } from "antd";
 
 const Home = () => {
   const { data } = useRequest(() => pageQueryDevices({ enable: true }));
@@ -22,6 +24,16 @@ const Home = () => {
       ids.forEach((id) => {
         socket.on(`pred${id}`, refs.current[id].handlePred);
       });
+
+      const findDeviceById = (id) => data.find((device) => device.id == id);
+
+      socket.on('warn', ({ id }) => {
+        notification.error({
+          message: `${findDeviceById(id)?.name} 检测出高危行为！`,
+        })
+        playSound();
+        refs.current[id].warn();
+      })
 
       return () => {
         socket.disconnect();
